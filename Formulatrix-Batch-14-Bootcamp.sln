@@ -5,6 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic Exercise", "Logic Exercise\Logic Exercise.csproj", "{9163483F-52CB-4934-8A57-5403B094D401}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Self-Learning", "Self-Learning", "{D06711FE-826C-425C-B74D-BB054AF335AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basic C#", "Self-Learning\Basic C#\Basic C#.csproj", "{DDEB5AB1-612B-4919-A693-05E712268704}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,12 @@ Global
 		{9163483F-52CB-4934-8A57-5403B094D401}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9163483F-52CB-4934-8A57-5403B094D401}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9163483F-52CB-4934-8A57-5403B094D401}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDEB5AB1-612B-4919-A693-05E712268704}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDEB5AB1-612B-4919-A693-05E712268704}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDEB5AB1-612B-4919-A693-05E712268704}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDEB5AB1-612B-4919-A693-05E712268704}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DDEB5AB1-612B-4919-A693-05E712268704} = {D06711FE-826C-425C-B74D-BB054AF335AE}
 	EndGlobalSection
 EndGlobal
