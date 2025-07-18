@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Basic C#", "Self-Learning\B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "C# Types", "Self-Learning\C# Types\C# Types.csproj", "{BDA903AA-45AE-482C-B647-24BD0E289E84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Advanced C#", "Self-Learning\Advanced C#\Advanced C#.csproj", "{BB83C601-6A42-47B2-AE2D-E30D7893B910}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,9 +34,14 @@ Global
 		{BDA903AA-45AE-482C-B647-24BD0E289E84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDA903AA-45AE-482C-B647-24BD0E289E84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDA903AA-45AE-482C-B647-24BD0E289E84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB83C601-6A42-47B2-AE2D-E30D7893B910}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB83C601-6A42-47B2-AE2D-E30D7893B910}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB83C601-6A42-47B2-AE2D-E30D7893B910}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB83C601-6A42-47B2-AE2D-E30D7893B910}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DDEB5AB1-612B-4919-A693-05E712268704} = {D06711FE-826C-425C-B74D-BB054AF335AE}
 		{BDA903AA-45AE-482C-B647-24BD0E289E84} = {D06711FE-826C-425C-B74D-BB054AF335AE}
+		{BB83C601-6A42-47B2-AE2D-E30D7893B910} = {D06711FE-826C-425C-B74D-BB054AF335AE}
 	EndGlobalSection
 EndGlobal
