@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using Generics;
 using static Generics.Generics;
+using EventHandlers;
 
 // Math.Math m = new();
 // Math.Math.GetTubeVolume(2, Math.Math.Multiply, Math.Math.Divide);
@@ -34,3 +35,33 @@ static void ActionObj(object obj) => Console.WriteLine(obj.ToString());
 
 stringDelegate strDelegate = ActionObj;
 strDelegate("Object String Delegate");
+
+Func<int, int, int> Multiply = (x, y) => x * y;
+Console.WriteLine($"Func Multiply: {Multiply(2, 3)}");
+
+Action<string> LogString = str => Console.WriteLine(str);
+LogString("Hello guys welkam bek tu mai cenel");
+
+Channel channel = new();
+
+static void Subscriber1(uint subscriber) => Console.WriteLine($"Subscriber1 now: {subscriber}");
+channel.SubscriberChanged += Subscriber1;
+
+channel.AddSubscriber();
+
+static void Subscriber2(uint subscriber) => Console.WriteLine($"Subscriber2 now: {subscriber}");
+channel.SubscriberChanged += Subscriber2;
+channel.AddSubscriber();
+
+channel.SubscriberChanged -= Subscriber2;
+
+Action postSubscriber1 = () => Console.WriteLine("Subscriber2");
+void post_PostUpdated(object sender, StandardPosterEventArgs e)
+{
+    Console.WriteLine(sender);
+    Console.WriteLine(e);
+}
+
+Post post = new("First Post");
+post.PostUpdated += post_PostUpdated;
+post.LastPost = "Test Updating";

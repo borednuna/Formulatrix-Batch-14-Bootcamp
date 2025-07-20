@@ -30,7 +30,7 @@ public class Math
     public static double GetTubeVolume(double diameter, Transformer multiply, Transformer divide)
     {
         Transformer tubeVolume = (multiply + divide)!;
-        tubeVolume -= divide!;
-        return tubeVolume!(diameter, 2);
+        tubeVolume -= divide;
+        return tubeVolume(diameter, 2);
     }
 }
