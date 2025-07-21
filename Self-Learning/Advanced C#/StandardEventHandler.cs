@@ -32,6 +32,7 @@ public class Post
         set
         {
             if (lastPost == value) return;
+            lastPost = value;
             OnPostUpdated(new StandardPosterEventArgs(value));
         }
     }
