@@ -8,7 +8,7 @@ class Program
     {
         uint x = DEFAULT_VALUE;
 
-        if (args.Length > 1)
+        if (args.Length >= 1)
         {
             x = Convert.ToUInt32(args[0]);
         }
