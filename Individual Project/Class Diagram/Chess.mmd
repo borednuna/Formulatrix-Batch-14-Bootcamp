@@ -1,7 +1,7 @@
 classDiagram
 
 class ColorType
-<<enueration>> ColorType
+<<enumeration>> ColorType
 ColorType : Black
 ColorType : White
 
@@ -18,21 +18,29 @@ PieceState : Captured
 
 class GameState
 <<enumeration>> GameState
-GameState : ACTIVE
+GameState : INTENDING_MOVE
+GameState : MAKING_MOVE
 GameState : BLACK_WIN
 GameState : WHITE_WIN
 GameState : STALEMATE
 GameState : RESIGNATION
 
+class PromotionPiece
+<<enumeration>> PromotionPiece
+PromotionPiece : ROOK
+PromotionPiece : BISHOP
+PromotionPiece : QUEEN
+
 class Piece {
-    <<abstract>>
     +ColorType Color : readonly
     +PieceState State
+    +char EmojiRepresentation
+    +uint InitialPositionX : readonly
+    +uint InitialPositionY : readonly
     +Piece(ColorType side) : void
-    +GetLegalMove(Chessboard board) :: List<Square>
-    +IsLegalMove() :: bool
-    #Traverse<T>(Square[][] board, Square? destination) :: T ~virtual~
+    +GetLegalMoves(Square[][] board) :: List<Square>
 }
+<<abstract>> Piece
 
 class Knight {
     
@@ -55,7 +63,8 @@ class King {
 }
 
 class Pawn {
-    
+    +PromotionPiece? promotedTo
+    +Promote()
 }
 
 class Square {
@@ -70,50 +79,96 @@ class Chessboard {
     +Chessboard()
     +Reset() :: void
     +GetSquare(uint file, uint rank) : Square
+    +GetKing(ColorType side) :: King
+    +IsCheckmate(ColorType side) :: bool
+    +IsStalemate() :: bool
+    +IsInsufficientPieces() :: bool
 }
 
-class Moves {
+class Move {
     +Square Start
     +Square Destination
     +Piece Piece
     +Piece? Captured
     +MoveType Type
     +TimeOnly time
+    -string _formattedMovement
     +Move(Square start, Square destination, MoveType type)
-    +IsCastling() :: bool
+    +CheckCaptured(Square[][] board) :: void
+    +IsCastling(Square[][] board) :: bool
     +IsEnPassant() :: bool
 }
 
 class Player {
     +string Name
     +ColorType side
-    +List<Moves> Scoresheet
+    +Queue<Move> Scoresheet
+    +int MoveNoPawnAndCapture
     +Player(string name, ColorType side)
-    +SaveScoresheet() :: void
 }
 
 class GameController {
     +string GameId : readonly
-    +Player WhiteSide
-    +Player BlackSide
+    +Player White
+    +Player Black
     +GameState State
     +ColorType Turn
+    +Utility utility
+    +List<Square>? CurrentLegalMoves
     +GameController(Player whiteSide, Player blackSide)
-    +Reset() :: void
+    +ResetGame() :: void
+    +InitGame() :: void
+    +NextTurn() :: void
+    +IntendMove(string sourceSquare) :: void
+    +CancelMove() :: void
+    +MakeMove(string destinationSquare) :: bool
+    +Action<.Move, Player>? OnMoveDone
+    +HandleMoveDone(Move move, Player player) :: void
+    +Action<.Piece>? OnCapturePiece
+    +HandleCapturePiece(Piece capturedPiece) :: void
+    +Action<.Piece>? OnCastling
+    +HandleCastling(Piece rook) :: void
+    +Action<.Piece>? OnEnPassant
+    +HandleEnPassant(Piece capturedPawn) :: void
+    +Action<.Piece>? OnCheckmate
+    +HandleEndgame() :: void
+    +Action<.Piece>? OnPawnPromotion
+    +HandlePawnPromotion(Pawn pawn)
+    +Action<.Player>? OnResign
+    +HandleResign(Player resignedPlayer)
 }
 
-Player *-- GameController
-GameState o-- GameController
-ColorType o-- GameController
-PieceState o-- Piece
+class Utility {
+    +uint STANDARD_BOARD_FILES : const
+    +uint STANDARD_BOARD_RANKS : const
+    $ShowChessboard(Square[][] board, List<Square>? legalMoves) : void
+    $SaveScoresheet(List<Move> scoresheet) :: bool
+    $ParseSquarePosition(string position, out uint file, out uint rank) :: void
+    +GetFormat(Type formatType) :: object
+    +Format(string format, object arg, IFormatProvider formatProvider) :: string
+}
+
+class IFormatProvider
+class ICustomFormatter
+
+Utility ..|> IFormatProvider
+Utility ..|> ICustomFormatter
+GameState <|-- Utility
+GameState --o GameController
+ColorType --* Piece
+ColorType --o GameController
+PieceState --o Piece
 Piece <|-- Knight
 Piece <|-- Bishop
 Piece <|-- Rook
 Piece <|-- Queen
 Piece <|-- King
 Piece <|-- Pawn
-Piece o-- Square
-Piece o-- ColorType
-Square *-- Chessboard
-Moves o-- MoveType
+Square *-- Piece
+Square --* Chessboard
+Move o-- MoveType
 Player o-- ColorType
+Player *-- Move
+Player --* GameController
+Utility --* GameController
+Pawn o-- PromotionPiece
