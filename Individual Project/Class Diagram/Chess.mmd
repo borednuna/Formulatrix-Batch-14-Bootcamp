@@ -1,0 +1,119 @@
+classDiagram
+
+class ColorType
+<<enueration>> ColorType
+ColorType : Black
+ColorType : White
+
+class MoveType
+<<enumeration>> MoveType
+MoveType : Normal
+MoveType : Casting
+MoveType : EnPassant
+
+class PieceState
+<<enumeration>> PieceState
+PieceState : Active
+PieceState : Captured
+
+class GameState
+<<enumeration>> GameState
+GameState : ACTIVE
+GameState : BLACK_WIN
+GameState : WHITE_WIN
+GameState : STALEMATE
+GameState : RESIGNATION
+
+class Piece {
+    <<abstract>>
+    +ColorType Color : readonly
+    +PieceState State
+    +Piece(ColorType side) : void
+    +GetLegalMove(Chessboard board) :: List<Square>
+    +IsLegalMove() :: bool
+    #Traverse<T>(Square[][] board, Square? destination) :: T ~virtual~
+}
+
+class Knight {
+    
+}
+
+class Bishop {
+    
+}
+
+class Rook {
+    
+}
+
+class Queen {
+    
+}
+
+class King {
+    
+}
+
+class Pawn {
+    
+}
+
+class Square {
+    -uint File : readonly
+    -uint Rank : readonly
+    +Piece? piece
+    +Square(uint file, uint rank)
+}
+
+class Chessboard {
+    +Square[][] squares
+    +Chessboard()
+    +Reset() :: void
+    +GetSquare(uint file, uint rank) : Square
+}
+
+class Moves {
+    +Square Start
+    +Square Destination
+    +Piece Piece
+    +Piece? Captured
+    +MoveType Type
+    +TimeOnly time
+    +Move(Square start, Square destination, MoveType type)
+    +IsCastling() :: bool
+    +IsEnPassant() :: bool
+}
+
+class Player {
+    +string Name
+    +ColorType side
+    +List<Moves> Scoresheet
+    +Player(string name, ColorType side)
+    +SaveScoresheet() :: void
+}
+
+class GameController {
+    +string GameId : readonly
+    +Player WhiteSide
+    +Player BlackSide
+    +GameState State
+    +ColorType Turn
+    +GameController(Player whiteSide, Player blackSide)
+    +Reset() :: void
+}
+
+Player *-- GameController
+GameState o-- GameController
+ColorType o-- GameController
+PieceState o-- Piece
+Piece <|-- Knight
+Piece <|-- Bishop
+Piece <|-- Rook
+Piece <|-- Queen
+Piece <|-- King
+Piece <|-- Pawn
+Piece o-- Square
+Piece o-- ColorType
+Square *-- Chessboard
+Moves o-- MoveType
+Player o-- ColorType
