@@ -7,13 +7,6 @@ class ColorType {
 }
 <<enumeration>> ColorType
 
-class MoveType {
-    Normal
-    Casting
-    EnPassant
-}
-<<enumeration>> MoveType
-
 class PieceState {
     Active
     Captured
@@ -79,31 +72,8 @@ class Board {
     +Board()
 }
 
-class Move {
-    +Square Start
-    +Square Destination
-    +Piece Piece
-    +Piece? Captured
-    +MoveType Type
-    +TimeOnly time
-    +string FormattedMovement
-    +Move(Square start, Square destination, MoveType type)
-    +CheckCaptured(Square[][] board) :: void
-    +IsCastling(Square[][] board) :: bool
-    +IsEnPassant() :: bool
-}
-
-class Player {
-    +string Name
-    +ColorType side
-    +Queue<.Move> Scoresheet
-    +uint MoveNoPawnAndCapture
-    +Player(string name, ColorType side)
-}
-
 class GameController {
     +string GameId : readonly
-    +List<.Player> players
     +Board Board
     +GameState State
     +bool _isWhiteTurn
@@ -141,11 +111,7 @@ Piece o-- PieceType
 PieceState --* Piece
 Square o-- Piece
 Square --* Board
-Move *-- MoveType
 Player o-- ColorType
-Player *-- Move
 Player --* GameController
 Piece <|.. IPiece
-Move -- Piece
-Move -- Square
 Square *-- Coordinate
