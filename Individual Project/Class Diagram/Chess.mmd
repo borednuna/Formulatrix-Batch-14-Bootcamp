@@ -102,7 +102,7 @@ class Move {
 class Player {
     +string Name
     +ColorType side
-    +Queue<Move> Scoresheet
+    +Queue<.Move> Scoresheet
     +int MoveNoPawnAndCapture
     +Player(string name, ColorType side)
 }
@@ -114,7 +114,7 @@ class GameController {
     +GameState State
     +ColorType Turn
     +Utility utility
-    +List<Square>? CurrentLegalMoves
+    +List<.Square>? CurrentLegalMoves
     +GameController(Player whiteSide, Player blackSide)
     +ResetGame() :: void
     +InitGame() :: void
@@ -141,8 +141,8 @@ class GameController {
 class Utility {
     +uint STANDARD_BOARD_FILES : const
     +uint STANDARD_BOARD_RANKS : const
-    $ShowChessboard(Square[][] board, List<Square>? legalMoves) : void
-    $SaveScoresheet(List<Move> scoresheet) :: bool
+    $ShowChessboard(Square[][] board, List<.Square>? legalMoves) : void
+    $SaveScoresheet(List<.Move> scoresheet) :: bool
     $ParseSquarePosition(string position, out uint file, out uint rank) :: void
     +GetFormat(Type formatType) :: object
     +Format(string format, object arg, IFormatProvider formatProvider) :: string
