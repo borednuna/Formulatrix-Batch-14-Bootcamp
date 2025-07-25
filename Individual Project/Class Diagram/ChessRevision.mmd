@@ -1,0 +1,145 @@
+classDiagram
+direction LR
+
+class ColorType {
+    Black
+    White
+}
+<<enumeration>> ColorType
+
+class MoveType {
+    Normal
+    Casting
+    EnPassant
+}
+<<enumeration>> MoveType
+
+class PieceState {
+    Active
+    Captured
+    Promoted
+}
+<<enumeration>> PieceState
+
+class GameState {
+    Init
+    IntendingMove
+    MakingMove
+    CheckmateBlackWin
+    CheckmateWhiteWin
+    Stalemate
+    Resignation
+}
+<<enumeration>> GameState
+
+class PieceType {
+    King
+    Queen
+    Rook
+    Bishop
+    Pawn
+}
+<<enumeration>> PieceType
+
+class Coordinate {
+    +uint X
+    +uint Y
+}
+<<struct>> Coordinate
+
+class IBoard {
+    +GetSquare(Coordinate coordinate) :: Square
+    +GetKing(ColorType side) :: Piece
+    +Traverse(Func<.Square, Square> GetNextSquare) :: <.T>
+    +ResetBoard() :: void
+}
+
+class GameController {
+    +DateTime dateTime
+    +List<.Player> players
+    +Board Board
+    +List<.Piece> pieces
+    +GameState State
+    +bool _isWhiteTurn
+    +Utility utility
+    +List<.Square>? CurrentLegalMoves
+    +GameController(Player whiteSide, Player blackSide)
+    +InitGame() :: void
+    +NextTurn() :: void
+    +IntendMove(string sourceSquare) :: void
+    +GetLegalMove(Piece piece) :: List<.Square>
+    +CancelMove() :: void
+    +MakeMove(string destinationSquare) :: bool
+    +Action<.Move, Player>? OnMoveDone
+    +HandleMoveDone(Move move, Player player) :: void
+    +Action<.Piece>? OnCapturePiece
+    +HandleCapturePiece(Piece capturedPiece) :: void
+    +Action<.Piece>? OnCastling
+    +HandleCastling(Piece rook) :: void
+    +Action<.Piece>? OnEnPassant
+    +HandleEnPassant(Piece capturedPawn) :: void
+    +Action<.Piece>? OnCheckmate
+    +HandleEndgame() :: void
+    +Action<.Piece>? OnPawnPromotion
+    +HandlePawnPromotion(Pawn pawn)
+    +Action<.Player>? OnResign
+    +HandleResign(Player resignedPlayer)
+}
+
+class Board {
+    +Square[][] squares
+    +Board()
+}
+
+class Square {
+    +Coordinate coordinate
+    +Piece? piece
+    +Square(uint file, uint rank)
+}
+
+class Piece {
+    +ColorType Color : readonly
+    +PieceState State
+    +PieceType Type
+    +uint InitialPositionX : readonly
+    +uint InitialPositionY : readonly
+    +Piece(ColorType side) : void
+}
+
+class Player {
+    +string Name
+    +ColorType side
+    +Queue<.Move> Scoresheet
+    +uint MoveNoPawnAndCapture
+    +Player(string name, ColorType side)
+}
+
+class Move {
+    +Square Start
+    +Square Destination
+    +Piece Piece
+    +Piece? Captured
+    +MoveType Type
+    +TimeOnly time
+    +string FormattedMovement
+    +Move(Square start, Square destination, MoveType type)
+    +CheckCaptured(Square[][] board) :: void
+    +IsCastling(Square[][] board) :: bool
+    +IsEnPassant() :: bool
+}
+
+Board *-- Square
+GameController *-- Piece
+GameController *-- Player
+GameController *-- Board
+GameController o-- GameState
+IBoard <|-- Board
+Move o-- MoveType
+Piece o-- PieceType
+Piece o-- PieceState
+Piece o-- ColorType
+Player *-- Move
+Player o-- ColorType
+Square o-- Coordinate
+Square -- Piece
+Square o-- Coordinate
