@@ -1,18 +1,11 @@
 classDiagram
-direction LR
+direction TB
 
 class ColorType {
     Black
     White
 }
 <<enumeration>> ColorType
-
-class MoveType {
-    Normal
-    Casting
-    EnPassant
-}
-<<enumeration>> MoveType
 
 class PieceState {
     Active
@@ -32,58 +25,69 @@ class GameState {
 }
 <<enumeration>> GameState
 
-class PieceType {
-    King
-    Queen
+class PawnPromotionType {
     Rook
     Bishop
-    Pawn
+    Knight
+    Queen
 }
-<<enumeration>> PieceType
+<<enumeration>> PawnPromotionType
 
-class Coordinate {
-    +uint X
-    +uint Y
+class Point {
+    +int X
+    +int Y
 }
-<<struct>> Coordinate
+<<struct>> Point
 
 class IBoard {
-    +GetSquare(Coordinate coordinate) :: Square
+    +GetSquare(Point coordinate) :: Square
     +GetKing(ColorType side) :: Piece
-    +Traverse(Func<.Square, Square> GetNextSquare) :: <.T>
+    +Traverse(List<.Point> directions, bool isMovementRepeat) :: List<.Square> traverseResult
     +ResetBoard() :: void
 }
+<<interface>> IBoard
+
+class IPiece {
+    +GetMovementBehavior(out List<.Point> directions, out bool isMovementRepeat)
+}
+<<interface>> IPiece
+
+class ISpecialPieceMovement {
+    +GetSpecialMovement(out Point direction)
+}
+<<interface>> ISpecialPieceMovement
 
 class GameController {
     +DateTime dateTime
-    +List<.Player> players
+    +List<.Dictionary<.ColorType, int>> players
     +Board Board
     +List<.Piece> pieces
     +GameState State
-    +bool _isWhiteTurn
+    -int _currentPlayerIndex
+    -Square? _intendedSquareSource
     +Utility utility
     +List<.Square>? CurrentLegalMoves
-    +GameController(Player whiteSide, Player blackSide)
+    +GameController()
     +InitGame() :: void
     +NextTurn() :: void
-    +IntendMove(string sourceSquare) :: void
-    +GetLegalMove(Piece piece) :: List<.Square>
+    +IntendMove(Square sourceSquare) :: void
+    +GetLegalMoves(Square sourceSquare) :: List<.Square>
     +CancelMove() :: void
-    +MakeMove(string destinationSquare) :: bool
-    +Action<.Move, Player>? OnMoveDone
-    +HandleMoveDone(Move move, Player player) :: void
+    +MakeMove(Square destinationSquare) :: bool
+    +Action? OnMoveDone
+    +HandleMoveDone() :: void
     +Action<.Piece>? OnCapturePiece
     +HandleCapturePiece(Piece capturedPiece) :: void
-    +Action<.Piece>? OnCastling
-    +HandleCastling(Piece rook) :: void
-    +Action<.Piece>? OnEnPassant
-    +HandleEnPassant(Piece capturedPawn) :: void
-    +Action<.Piece>? OnCheckmate
-    +HandleEndgame() :: void
-    +Action<.Piece>? OnPawnPromotion
+    +Action<.Rook>? OnCastling
+    +HandleCastling(Rook rook) :: void
+    +Action<.Pawn>? OnEnPassant
+    +HandleEnPassant(Pawn capturedPawn) :: void
+    +Action<.Pawn>? OnPawnPromotion
     +HandlePawnPromotion(Pawn pawn)
-    +Action<.Player>? OnResign
-    +HandleResign(Player resignedPlayer)
+    +Action? OnCheckmate
+    +Action? OnResign
+    +Action? OnStalemate
+    +HandleEndgame() :: void
 }
 
 class Board {
@@ -92,7 +96,7 @@ class Board {
 }
 
 class Square {
-    +Coordinate coordinate
+    +Point coordinate
     +Piece? piece
     +Square(uint file, uint rank)
 }
@@ -101,45 +105,48 @@ class Piece {
     +ColorType Color : readonly
     +PieceState State
     +PieceType Type
+    +List<.Point> Directions
+    +bool isMovementRepeat
+    +bool hasSpecialMove
     +uint InitialPositionX : readonly
     +uint InitialPositionY : readonly
     +Piece(ColorType side) : void
 }
 
-class Player {
-    +string Name
-    +ColorType side
-    +Queue<.Move> Scoresheet
-    +uint MoveNoPawnAndCapture
-    +Player(string name, ColorType side)
+class King {
+    +List<.Point> castlingCoordinates
 }
 
-class Move {
-    +Square Start
-    +Square Destination
-    +Piece Piece
-    +Piece? Captured
-    +MoveType Type
-    +TimeOnly time
-    +string FormattedMovement
-    +Move(Square start, Square destination, MoveType type)
-    +CheckCaptured(Square[][] board) :: void
-    +IsCastling(Square[][] board) :: bool
-    +IsEnPassant() :: bool
+class Pawn {
+    +Point EnPassantDirection
+    -bool _isPromoted
+    -PawnPromotionType _promotionType
+    +bool PromotePawn(PawnPromotionType targetPromotion) :: void
 }
+
+class Queen
+class Knight
+class Rook
+class Bishop
 
 Board *-- Square
 GameController *-- Piece
-GameController *-- Player
 GameController *-- Board
 GameController o-- GameState
 IBoard <|-- Board
-Move o-- MoveType
-Piece o-- PieceType
+IPiece <|.. Piece
+ISpecialPieceMovement <|.. Pawn
+ISpecialPieceMovement <|.. King
+Pawn o-- PawnPromotionType
 Piece o-- PieceState
 Piece o-- ColorType
-Player *-- Move
-Player o-- ColorType
-Square o-- Coordinate
+Piece o-- Point
+Piece <|-- King
+Piece <|-- Pawn
+Piece <|-- Queen
+Piece <|-- Rook
+Piece <|-- Bishop
+Piece <|-- Knight
+Square o-- Point
 Square -- Piece
-Square o-- Coordinate
+Square o-- Point
