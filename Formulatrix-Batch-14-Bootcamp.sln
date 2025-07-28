@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Advanced C#", "Self-Learnin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Second Logic Exercise", "Second Logic Exercise\Second Logic Exercise.csproj", "{1731698E-95AC-4C11-8319-58DC6B6EE354}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Third Logic Exercise", "Third Logic Exercise\Third Logic Exercise.csproj", "{1A324208-3698-4095-8162-FA7AD8B2592A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,18 @@ Global
 		{1731698E-95AC-4C11-8319-58DC6B6EE354}.Release|x64.Build.0 = Release|Any CPU
 		{1731698E-95AC-4C11-8319-58DC6B6EE354}.Release|x86.ActiveCfg = Release|Any CPU
 		{1731698E-95AC-4C11-8319-58DC6B6EE354}.Release|x86.Build.0 = Release|Any CPU
+		{1A324208-3698-4095-8162-FA7AD8B2592A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A324208-3698-4095-8162-FA7AD8B2592A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A324208-3698-4095-8162-FA7AD8B2592A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1A324208-3698-4095-8162-FA7AD8B2592A}.Debug|x64.Build.0 = Debug|Any CPU
+		{1A324208-3698-4095-8162-FA7AD8B2592A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1A324208-3698-4095-8162-FA7AD8B2592A}.Debug|x86.Build.0 = Debug|Any CPU
+		{1A324208-3698-4095-8162-FA7AD8B2592A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A324208-3698-4095-8162-FA7AD8B2592A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A324208-3698-4095-8162-FA7AD8B2592A}.Release|x64.ActiveCfg = Release|Any CPU
+		{1A324208-3698-4095-8162-FA7AD8B2592A}.Release|x64.Build.0 = Release|Any CPU
+		{1A324208-3698-4095-8162-FA7AD8B2592A}.Release|x86.ActiveCfg = Release|Any CPU
+		{1A324208-3698-4095-8162-FA7AD8B2592A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
