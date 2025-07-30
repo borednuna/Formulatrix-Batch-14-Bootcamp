@@ -45,73 +45,90 @@ class IPiece {
 <<interface>> IPiece
 
 class ISpecialPieceMovement {
-    +GetSpecialMovement(out Point direction)
+    +GetSpecialMovement(out List<.Point> direction)
 }
 <<interface>> ISpecialPieceMovement
 
+class ISquare {
+    +GetPosition() :: Point coordinate
+    +GetPiece() :: Piece piece
+}
+<<interface>> ISquare
+
 class GameController {
-    +DateTime dateTime
-    +List<.ColorType> players
+    +List<.Dictionary<.ColorType, int>> players
     +Board Board
     +List<.Piece> pieces
     +GameState State
-    +bool _isWhiteTurn
+    -int _currentPlayerIndex
+    -Square? _intendedSquareSource
     +Utility utility
     +List<.Square>? CurrentLegalMoves
-    +GameController(Player whiteSide, Player blackSide)
+    +GameController()
     +InitGame() :: void
     +NextTurn() :: void
     +IntendMove(Square sourceSquare) :: void
-    +GetLegalMove(Square sourceSquare) :: List<.Square>
+    +GetLegalMoves() :: List<.Square>
     +CancelMove() :: void
     +MakeMove(Square destinationSquare) :: bool
-    +Action<.Move, Player>? OnMoveDone
-    +HandleMoveDone(Move move, Player player) :: void
+    +Action? OnMoveDone
+    +HandleMoveDone() :: void
     +Action<.Piece>? OnCapturePiece
     +HandleCapturePiece(Piece capturedPiece) :: void
-    +Action<.Piece>? OnCastling
-    +HandleCastling(Piece rook) :: void
-    +Action<.Piece>? OnEnPassant
-    +HandleEnPassant(Piece capturedPawn) :: void
-    +Action<.Piece>? OnCheckmate
-    +HandleEndgame() :: void
-    +Action<.Piece>? OnPawnPromotion
+    +Action<.Rook>? OnCastling
+    +HandleCastling(Rook rook) :: void
+    +Action<.Pawn>? OnEnPassant
+    +HandleEnPassant(Pawn capturedPawn) :: void
+    +Action<.Pawn>? OnPawnPromotion
     +HandlePawnPromotion(Pawn pawn)
-    +Action<.Player>? OnResign
-    +HandleResign(Player resignedPlayer)
+    +Action? OnCheckmate
+    +Action? OnResign
+    +Action? OnStalemate
+    +HandleCheckmate() :: void
+    +HandleResign(int resignedPlayerIndex) :: void
+    +HandleStalemate() :: void
 }
 
 class Board {
-    +Square[][] squares
+    +Square[,] squares
     +Board()
+    +GetSquare(Point coordinate) :: Square
+    +GetKing(ColorType side) :: Piece
+    +Traverse(List<.Point> directions, bool isMovementRepeat) :: List<.Square> traverseResult
+    +ResetBoard() :: void
 }
 
 class Square {
     +Point coordinate
     +Piece? piece
     +Square(uint file, uint rank)
+    +GetPosition() :: Point coordinate
+    +GetPiece() :: Piece piece
 }
 
 class Piece {
     +ColorType Color : readonly
     +PieceState State
     +PieceType Type
-    +List<.Point> Directions
-    +bool isMovementRepeat
-    +bool hasSpecialMove
+    +List<.Point> Directions : readonly
+    +bool isMovementRepeat : readonly
+    +bool hasSpecialMove : readonly
     +uint InitialPositionX : readonly
     +uint InitialPositionY : readonly
     +Piece(ColorType side) : void
+    +GetMovementBehavior(out List<.Point> directions, out bool isMovementRepeat)
 }
 
 class King {
     +List<.Point> castlingCoordinates
+    +GetSpecialMovement(out List<.Point> direction)
 }
 
 class Pawn {
-    +Point enPassantDirection
-    +bool isPromoted
-    +bool promotePawn() :: void
+    +Point EnPassantDirection
+    -PawnPromotionType _promotionType
+    +bool PromotePawn(PawnPromotionType targetPromotion) :: void
+    +GetSpecialMovement(out List<.Point> direction)
 }
 
 class Queen
@@ -127,6 +144,8 @@ IBoard <|-- Board
 IPiece <|.. Piece
 ISpecialPieceMovement <|.. Pawn
 ISpecialPieceMovement <|.. King
+ISquare <|.. Square
+Pawn o-- PawnPromotionType
 Piece o-- PieceState
 Piece o-- ColorType
 Piece o-- Point
