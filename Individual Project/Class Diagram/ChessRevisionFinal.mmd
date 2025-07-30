@@ -63,9 +63,9 @@ class ISquare {
 <<interface>> ISquare
 
 class IPlayer {
-    +GetColor() : ColorType
-    +GetMoveCountNoCaptureNoPromotion() : uint
-    +SetMoveCountNoCaptureNoPromotion(uint increment) : void
+    +GetColor() : ColorType color
+    +GetMoveCountNoCaptureNoPromotion() : uint moveNoCaptureNoPromotion
+    +SetMoveCountNoCaptureNoPromotion(uint counter) : void
 }
 <<interface>> IPlayer
 
@@ -74,13 +74,13 @@ class Player {
     +uint MoveCountNoCaptureNoPromotion
     +Player(ColorType color)
     +GetColor() : ColorType
-    +GetMoveCountNoCaptureNoPromotion() : uint
+    +GetMoveCountNoCaptureNoPromotion() : uint moveNoCaptureNoPromotion
     +SetMoveCountNoCaptureNoPromotion(uint counter) : void
 }
 
 class GameController {
     +List<.IPlayer> Players
-    +Dictionary<.IPlayer, List<.IPiece>> players
+    +Dictionary<.IPlayer, List<.IPiece>> PlayersPieces
     +IBoard Board
     +GameState State
     -int _currentPlayerIndex
@@ -119,8 +119,8 @@ class Board {
 }
 
 class Square {
-    +Point coordinate
-    +IPiece? piece
+    +Point Coordinate
+    +IPiece? Piece
     +Square(Point coordinate)
     +GetPosition() : Point coordinate
     +GetPiece() : IPiece piece
