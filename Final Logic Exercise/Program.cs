@@ -17,7 +17,7 @@ helperClass.PrintSequence(x);
 #region NUMBER_HELPER_CLASS
 public class NumberHelper
 {
-    private Dictionary<int, string> _rules = [];
+    private SortedDictionary<int, string> _rules = [];
 
     public NumberHelper()
     {
