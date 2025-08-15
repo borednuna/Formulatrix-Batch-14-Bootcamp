@@ -1,0 +1,28 @@
+classDiagram
+%% direction TB
+
+class Client
+
+class Component {
+    +Execute()
+}
+<<interface>> Component
+
+class Leaf {
+    +Execute()
+}
+note for Leaf "Do some work"
+
+class Composite {
+    -children: Component[]
+    +add(c: Component)
+    +remove(c: Component)
+    +getChildren() : Component[]
+    +execute()
+}
+note for Composite "Delegate all work to child components"
+
+Client <-- Component
+Composite <--o Component
+Component <|.. Leaf
+Component <|.. Composite
